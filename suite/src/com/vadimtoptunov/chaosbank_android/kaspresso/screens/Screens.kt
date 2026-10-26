@@ -109,6 +109,24 @@ class CardScreen(p: SemanticsNodeInteractionsProvider) : CbScreen<CardScreen>(p)
     val virtualButton = tag("card.virtualButton")
     val virtualNumber = tag("card.virtualNumber")
     val loanButton = tag("card.loanButton")
+    val kycButton = tag("card.kycButton")
+    val kycStatus = tag("card.kycStatus")
+}
+
+/**
+ * Card → Verify identity: the mock KYC flow (document → selfie → submit → result).
+ * What the scanner and the face check return is set at launch with
+ * `CHAOSBANK_KYC_DOCUMENT` and `CHAOSBANK_KYC_SELFIE`.
+ */
+class KycScreen(p: SemanticsNodeInteractionsProvider) : CbScreen<KycScreen>(p) {
+    val scanButton = tag("kyc.scanButton")
+    val scanError = tag("kyc.scanError")
+    val selfieButton = tag("kyc.selfieButton")
+    val selfieResult = tag("kyc.selfieResult")
+    val submitButton = tag("kyc.submitButton")
+    val resultTitle = tag("kyc.resultTitle")
+    val resultReason = tag("kyc.resultReason")
+    val doneButton = tag("kyc.doneButton")
 }
 
 class LoansScreen(p: SemanticsNodeInteractionsProvider) : CbScreen<LoansScreen>(p) {

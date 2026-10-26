@@ -67,13 +67,14 @@ Needs a ChaosBank-Android build that has the server backend (`CHAOSBANK_BACKEND`
 
 ## What's covered
 
-55 tests, ported from the iOS suite and checked one defect at a time:
+62 tests, ported from the iOS suite and checked one defect at a time:
 
 | File | Classes | What they pin down |
 | --- | --- | --- |
 | `CoreTests.kt` | Auth, Home, Markets, Transfer, Exchange, Portfolio, Card, Transactions, Order, Loans | the main flows, plus the defects they meet on the way |
 | `ValueTests.kt` | `*ValueTests` | the money: totals, debits, credits, P&L, APR, order totals |
 | `GapTests.kt` | Localization, Concurrency, Security | locale formatting, double submits and races, PIN/PAN masking, OTP, deep links, token storage |
+| `KycTests.kt` | Kyc | the mock identity check (scripted document and selfie) and the €1,000 transfer gate it opens |
 
 `tools/mutation_matrix.py` runs each class under each of its defects and lists the
 survivors. 44 defects are mapped to the tests that should catch them, and all 44 are caught.
