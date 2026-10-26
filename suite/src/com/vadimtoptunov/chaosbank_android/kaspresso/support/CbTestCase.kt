@@ -22,6 +22,9 @@ import org.junit.Rule
  *
  *     ./gradlew :app:connectedStandardDebugAndroidTest \
  *       -Pandroid.testInstrumentationRunnerArguments.cbDefects=pnlSign
+ *
+ * `cbBackend=http://10.0.2.2:8080` runs the same tests against ChaosBank-Server instead
+ * of the embedded mock (10.0.2.2 is the host machine, seen from the emulator).
  */
 abstract class CbTestCase : TestCase(kaspressoBuilder = Kaspresso.Builder.withComposeSupport()) {
 
@@ -46,12 +49,13 @@ abstract class CbTestCase : TestCase(kaspressoBuilder = Kaspresso.Builder.withCo
         scenario = ActivityScenario.launch(intent)
     }
 
-    /** `cbDefects` / `cbProfile` instrumentation arguments → ChaosBank's intent extras. */
+    /** `cbDefects` / `cbProfile` / `cbBackend` instrumentation arguments → ChaosBank's intent extras. */
     private fun injected(): Map<String, String> {
         val args = InstrumentationRegistry.getArguments()
         return buildMap {
             args.getString("cbDefects")?.takeIf { it.isNotBlank() }?.let { put("CHAOSBANK_DEFECTS", it) }
             args.getString("cbProfile")?.takeIf { it.isNotBlank() }?.let { put("CHAOSBANK_PROFILE", it) }
+            args.getString("cbBackend")?.takeIf { it.isNotBlank() }?.let { put("CHAOSBANK_BACKEND", it) }
         }
     }
 

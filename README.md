@@ -52,6 +52,19 @@ broken build without edits:
   -Pandroid.testInstrumentationRunnerArguments.cbDefects=pnlSign,cardCvvVisible
 ```
 
+## Run it against ChaosBank-Server
+
+The same tests against [ChaosBank-Server](https://github.com/VadimToptunov/ChaosBank-Server)
+instead of the embedded mock (`docker compose up` there first; 10.0.2.2 is the host
+machine from the emulator):
+
+```bash
+./gradlew :app:connectedStandardDebugAndroidTest \
+  -Pandroid.testInstrumentationRunnerArguments.cbBackend=http://10.0.2.2:8080
+```
+
+Needs a ChaosBank-Android build that has the server backend (`CHAOSBANK_BACKEND`).
+
 ## What's covered
 
 55 tests, ported from the iOS suite and checked one defect at a time:
