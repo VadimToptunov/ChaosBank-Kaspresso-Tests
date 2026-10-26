@@ -18,6 +18,8 @@ project(":app") {
         dependencies {
             "androidTestImplementation"("com.kaspersky.android-components:kaspresso:$kaspresso")
             "androidTestImplementation"("com.kaspersky.android-components:kaspresso-compose-support:$kaspresso")
+            // The web login is an HTML form in a WebView: Espresso Web drives its DOM.
+            "androidTestImplementation"("androidx.test.espresso:espresso-web:3.7.0")
         }
     }
 }

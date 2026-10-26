@@ -52,6 +52,30 @@ broken build without edits:
   -Pandroid.testInstrumentationRunnerArguments.cbDefects=pnlSign,cardCvvVisible
 ```
 
+## What's covered
+
+55 tests, ported from the iOS suite and checked one defect at a time:
+
+| File | Classes | What they pin down |
+| --- | --- | --- |
+| `CoreTests.kt` | Auth, Home, Markets, Transfer, Exchange, Portfolio, Card, Transactions, Order, Loans | the main flows, plus the defects they meet on the way |
+| `ValueTests.kt` | `*ValueTests` | the money: totals, debits, credits, P&L, APR, order totals |
+| `GapTests.kt` | Localization, Concurrency, Security | locale formatting, double submits and races, PIN/PAN masking, OTP, deep links, token storage |
+
+`tools/mutation_matrix.py` runs each class under each of its defects and lists the
+survivors. 44 defects are mapped to the tests that should catch them, and all 44 are caught.
+
+## Notes for Compose
+
+- Kaspresso doesn't wait for Compose nodes the way it does for Views. Data loads
+  asynchronously, so `support/Reads.kt` has explicit waits (`waitForTag`, `waitEnabled`,
+  `waitForRows`, `eventually`). A read without a wait can see a placeholder (`+$0.00 · +0.00%`)
+  and pass for the wrong reason.
+- Prices tick every 700 ms. A test that compares two labels reads both from one
+  semantics snapshot (`snapshotTexts`).
+- Two `performClick()` calls wait for idle in between, so they never race.
+  `rapidDoubleTap` sends both taps in one gesture.
+
 ## License
 
 [MIT](LICENSE)

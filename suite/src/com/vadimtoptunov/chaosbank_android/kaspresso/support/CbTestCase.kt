@@ -34,13 +34,14 @@ abstract class CbTestCase : TestCase(kaspressoBuilder = Kaspresso.Builder.withCo
     protected fun launchUnlocked(tab: String? = null, extra: Map<String, String> = emptyMap()) =
         launch(mapOf("CHAOSBANK_START_UNLOCKED" to "1") + (tab?.let { mapOf("CHAOSBANK_TAB" to it) } ?: emptyMap()) + extra)
 
-    /** A fresh, locked launch: the app opens on the auth ladder. */
-    protected fun launchFresh(extra: Map<String, String> = emptyMap()) =
-        launch(mapOf("CHAOSBANK_START_UNLOCKED" to "0") + extra)
+    /** A fresh, locked launch: the app opens on the auth ladder. [deepLink] opens a URI with it. */
+    protected fun launchFresh(extra: Map<String, String> = emptyMap(), deepLink: String? = null) =
+        launch(mapOf("CHAOSBANK_START_UNLOCKED" to "0") + extra, deepLink)
 
-    private fun launch(extras: Map<String, String>) {
+    private fun launch(extras: Map<String, String>, deepLink: String? = null) {
         scenario?.close()
         val intent = Intent(ApplicationProvider.getApplicationContext(), MainActivity::class.java)
+        deepLink?.let { intent.data = android.net.Uri.parse(it) }
         (extras + injected()).forEach { (key, value) -> intent.putExtra(key, value) }
         scenario = ActivityScenario.launch(intent)
     }
